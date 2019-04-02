@@ -5,13 +5,13 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 
+import static com.mongodb.MongoClientOptions.builder;
 import static com.mongodb.MongoCredential.createCredential;
-import static com.sun.tools.javac.util.List.of;
 
-public class MongoConnector {
-    PropertyLoader propertyLoader = new PropertyLoader();
+class MongoConnector {
+    private PropertyLoader propertyLoader = new PropertyLoader();
 
-    public MongoDatabase connect() {
+    MongoDatabase connect() {
         propertyLoader.init();
         ServerAddress serverAddress = new ServerAddress(propertyLoader.getAddress());
         MongoCredential mongoCredential =
@@ -19,8 +19,7 @@ public class MongoConnector {
                         propertyLoader.getDB(),
                         propertyLoader.getPassword().toCharArray());
 
-        MongoClient mongoClient = new MongoClient(serverAddress, of(mongoCredential));
+        MongoClient mongoClient = new MongoClient(serverAddress, mongoCredential, builder().build());
         return mongoClient.getDatabase("test");
-
     }
 }

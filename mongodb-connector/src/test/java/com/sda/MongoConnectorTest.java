@@ -32,6 +32,6 @@ public class MongoConnectorTest {
         MongoDatabase db = mongoConnector.connect();
         //then
         MongoCollection<Document> grades = db.getCollection("grades");
-        assertEquals(grades.count(), 804);
+        assertEquals(grades.estimatedDocumentCount(), 804);
     }
 }
