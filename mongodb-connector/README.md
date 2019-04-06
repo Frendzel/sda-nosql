@@ -33,12 +33,12 @@ db.createUser(
 
 *IMPORTANT:*
 
-* https://docs.mongodb.com/manual/crud/[https://docs.mongodb.com/manual/crud/]
-* https://docs.mongodb.com/manual/tutorial/insert-documents/[https://docs.mongodb.com/manual/tutorial/insert-documents/]
-* https://docs.mongodb.com/manual/tutorial/query-documents/[https://docs.mongodb.com/manual/tutorial/query-documents/]
-* https://docs.mongodb.com/manual/tutorial/update-documents/[https://docs.mongodb.com/manual/tutorial/update-documents/]
-* https://docs.mongodb.com/manual/tutorial/remove-documents/[https://docs.mongodb.com/manual/tutorial/remove-documents/]
-* https://docs.mongodb.com/manual/aggregation/[https://docs.mongodb.com/manual/aggregation/]
+* https://docs.mongodb.com/manual/crud
+* https://docs.mongodb.com/manual/tutorial/insert-documents
+* https://docs.mongodb.com/manual/tutorial/query-documents
+* https://docs.mongodb.com/manual/tutorial/update-documents
+* https://docs.mongodb.com/manual/tutorial/remove-documents
+* https://docs.mongodb.com/manual/aggregation
 * Embedded Mongo DB: https://github.com/flapdoodle-oss/de.flapdoodle.embed.mongo
 * JSON Validator https://jsonlint.com/
 
@@ -69,8 +69,8 @@ mvn archetype:generate -DgroupId=pl.sda -DartifactId=mongodb-connector -Darchety
 4. Use sort on above examples.
 5. Use limit on above examples.
 6. Use aggregate method to calculate grades avg.
-7. Increment all exam grades if they are in the range <10,20>
-https://docs.mongodb.com/manual/reference/operator/update/max/#up._S_max[https://docs.mongodb.com/manual/reference/operator/update/max/#up._S_max]
+7. Increment all exam grades by 1
+https://docs.mongodb.com/manual/reference/operator/update/max/#up._S_max
 8. Do the insert of random document.
 9. Do the update of random document.
 10. Do the replace of some document.
@@ -84,3 +84,4 @@ http://mongodb.github.io/mongo-java-driver/3.5/driver/getting-started/quick-star
 https://github.com/testcontainers/testcontainers-java/blob/master/core/src/test/java/org/testcontainers/junit/GenericContainerRuleTest.java
 18. Perform a text search on the collection.
 http://mongodb.github.io/mongo-java-driver/3.5/driver/tutorials/text-search/ 
+19. http://api.icndb.com/jokes/random !!!

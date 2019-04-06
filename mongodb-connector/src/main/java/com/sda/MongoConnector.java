@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import static com.mongodb.MongoClientOptions.builder;
 import static com.mongodb.MongoCredential.createCredential;
 
+//TODO create factory which will produce 2 connectors (local/remote)
 class MongoConnector {
     private PropertyLoader propertyLoader = new PropertyLoader();
 
@@ -20,6 +21,6 @@ class MongoConnector {
                         propertyLoader.getPassword().toCharArray());
 
         MongoClient mongoClient = new MongoClient(serverAddress, mongoCredential, builder().build());
-        return mongoClient.getDatabase("test");
+        return mongoClient.getDatabase(propertyLoader.getDB());
     }
 }
