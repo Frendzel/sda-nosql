@@ -1,5 +1,6 @@
 package com.sda;
 
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -11,7 +12,7 @@ import org.junit.Test;
 import static com.mongodb.client.model.Filters.*;
 import static org.junit.Assert.assertEquals;
 
-public class MongoConnectorTest {
+public class LocalMongoConnectorTest {
 
     private PropertyLoader propertyLoader;
 
@@ -30,9 +31,9 @@ public class MongoConnectorTest {
     @Test
     public void mongoConnector() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         //when
-        MongoDatabase db = mongoConnector.connect();
+        MongoDatabase db = localMongoConnector.connect();
         //then
         MongoCollection<Document> grades = db.getCollection("grades");
         assertEquals(grades.estimatedDocumentCount(), 804);
@@ -41,9 +42,9 @@ public class MongoConnectorTest {
     @Test
     public void getSize() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         //when
-        Long result = mongoConnector.getSize("grades");
+        Long result = localMongoConnector.getSize("grades");
         //then
         assertEquals(result.longValue(), 804);
     }
@@ -51,9 +52,9 @@ public class MongoConnectorTest {
     @Test
     public void showAllRecords() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         //when
-        mongoConnector.showAllRecords("grades");
+        localMongoConnector.showAllRecords("grades");
         //no then 😞
     }
 
@@ -61,9 +62,9 @@ public class MongoConnectorTest {
     @Test
     public void findStudentWhereIdLt10() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         //when
-        FindIterable<Document> studentsWhereIdLt10 = mongoConnector.findStudentsWhereIdLt10();
+        FindIterable<Document> studentsWhereIdLt10 = localMongoConnector.findStudentsWhereIdLt10();
         //then
         for (Document document : studentsWhereIdLt10) {
             System.out.println(document);
@@ -76,10 +77,10 @@ public class MongoConnectorTest {
     @Test
     public void findWithSuitableClause() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         Bson bson = eq("type", "homework");
         //when
-        FindIterable<Document> result = mongoConnector.findStudentsWithClause(bson);
+        FindIterable<Document> result = localMongoConnector.findStudentsWithClause(bson);
         //then
         for (Document document : result) {
             System.out.println(document);
@@ -91,10 +92,10 @@ public class MongoConnectorTest {
     @Test
     public void findWithSuitableClause2() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         Bson bson = nin("type", "quiz", "exam");
         //when
-        FindIterable<Document> result = mongoConnector.findStudentsWithClause(bson);
+        FindIterable<Document> result = localMongoConnector.findStudentsWithClause(bson);
         //then
         for (Document document : result) {
             System.out.println(document);
@@ -106,13 +107,13 @@ public class MongoConnectorTest {
     @Test
     public void findWithSuitableClause3() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         Bson bson = and(
                 lt("student_id", "10"),
                 eq("type", "homework")
         );
         //when
-        FindIterable<Document> result = mongoConnector.findStudentsWithClause(bson);
+        FindIterable<Document> result = localMongoConnector.findStudentsWithClause(bson);
         //then
         for (Document document : result) {
             System.out.println(document);
@@ -125,7 +126,7 @@ public class MongoConnectorTest {
     @Test
     public void findWithSuitableClause4() {
         //given
-        MongoConnector mongoConnector = new MongoConnector();
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
         Bson bson = and(
                 in("student_id", 1, 2, 3),
                 or(
@@ -134,9 +135,21 @@ public class MongoConnectorTest {
                 )
         );
         //when
-        FindIterable<Document> result = mongoConnector.findStudentsWithClause(bson);
+        FindIterable<Document> result = localMongoConnector.findStudentsWithClause(bson);
         //then
         for (Document document : result) {
+            System.out.println(document);
+        }
+    }
+
+    @Test
+    public void aggregateTest() {
+        //given
+        LocalMongoConnector localMongoConnector = new LocalMongoConnector();
+        //when
+        AggregateIterable<Document> documents = localMongoConnector.calculateSumForEachStudent();
+        //then
+        for (Document document : documents) {
             System.out.println(document);
         }
     }

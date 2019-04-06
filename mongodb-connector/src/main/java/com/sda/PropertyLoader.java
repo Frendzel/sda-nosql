@@ -33,6 +33,10 @@ public class PropertyLoader {
         return getData("db");
     }
 
+    public String getURI() {
+        return getData("uri");
+    }
+
     private String getData(String data) {
         return properties.getProperty(data);
     }

@@ -3,6 +3,7 @@
 Import data
 ```
 mongoimport --db test --collection grades --drop --file grades.json
+mongoimport --host <HOST WASZ> --ssl --username user --password user --authenticationDatabase admin --db test --collection grades --file grades.json
 ```
 Creating admin user
 ```
