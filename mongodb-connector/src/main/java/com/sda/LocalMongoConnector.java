@@ -20,10 +20,11 @@ import static com.mongodb.client.model.Accumulators.sum;
 import static com.mongodb.client.model.Aggregates.*;
 import static com.mongodb.client.model.Filters.eq;
 import static com.mongodb.client.model.Filters.lt;
+import static com.sda.PropertyLoader.getInstance;
 
 //TODO create factory which will produce 2 connectors (local/remote)
 class LocalMongoConnector implements MongoConnector {
-    private PropertyLoader propertyLoader = new PropertyLoader();
+    private PropertyLoader propertyLoader = getInstance();
 
     @Override
     public MongoDatabase connect() {

@@ -4,10 +4,23 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-//TODO use singleton here
 public class PropertyLoader {
 
+    private static PropertyLoader instance;
     private Properties properties = new Properties();
+
+    public PropertyLoader() {
+    }
+
+    public static PropertyLoader getInstance() {
+        synchronized (PropertyLoader.class) {
+            if (instance == null) {
+                instance = new PropertyLoader();
+            }
+            return instance;
+        }
+    }
+
 
     public void init() {
         try (InputStream stream = this.getClass().getClassLoader().getResourceAsStream("connection.properties")) {
