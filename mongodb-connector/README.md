@@ -61,7 +61,7 @@ mvn archetype:generate -DgroupId=pl.sda -DartifactId=mongodb-connector -Darchety
 
 ```
 
-*WORKSHOPS 2*
+*WORKSHOPS 1-2*
 
 
 1. Use find method to extract cursor to all existing data.
