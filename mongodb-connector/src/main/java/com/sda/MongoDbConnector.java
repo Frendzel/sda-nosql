@@ -6,7 +6,7 @@ import com.mongodb.MongoCredential;
 import com.mongodb.ServerAddress;
 import com.mongodb.client.MongoDatabase;
 
-import static com.mongodb.MongoCredential.createPlainCredential;
+import static com.mongodb.MongoCredential.createCredential;
 
 public class MongoDbConnector implements MongoApi {
 
@@ -26,12 +26,16 @@ public class MongoDbConnector implements MongoApi {
 
     private void createClient() {
         ServerAddress serverAddress = new ServerAddress(propertyLoader.getAddress());
-        MongoCredential credential = createPlainCredential(
+        MongoCredential credential = createCredential(
                 propertyLoader.getUser(),
                 propertyLoader.getDB(),
                 propertyLoader.getPassword().toCharArray());
         MongoClientOptions options = new MongoClientOptions.Builder().build();
         mongoClient = new MongoClient(serverAddress, credential, options);
+    }
+
+    public PropertyLoader getPropertyLoader() {
+        return propertyLoader;
     }
 
 }
