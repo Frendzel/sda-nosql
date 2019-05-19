@@ -1,5 +1,6 @@
 package com.sda;
 
+import com.google.common.collect.ImmutableMap;
 import com.mongodb.client.FindIterable;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -9,7 +10,10 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static com.mongodb.client.model.Filters.gt;
+import java.util.Map;
+
+import static com.mongodb.client.model.Filters.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class GradesApiTest {
 
@@ -63,4 +67,87 @@ class GradesApiTest {
                             .build()));
         }
     }
+
+    //db.grades.find({type: {$nin:["quiz","exam"]}})
+    @Test
+    @DisplayName("TODO")
+    void findBy3() {
+        //when
+        Bson filter = nin("type", "quiz", "exam");
+        FindIterable<Document> documents = api.findBy(filter);
+        //then
+        for (Document document : documents) {
+            logger.info(document.toJson(
+                    JsonWriterSettings
+                            .builder()
+                            .indent(true)
+                            .build()));
+        }
+    }
+
+    //db.grades.find({$and: [{type: "homework"}, {student_id: {$gt: 20}}]})
+    @Test
+    void findByTwoParams() {
+        //when
+        FindIterable<Document> documents = api.findBy(
+                and(
+                        eq("type", "homework"),
+                        gt("student_id", 20)
+                ));
+        //then
+        for (Document document : documents) {
+            logger.info(document.toJson(JsonWriterSettings.builder().indent(true).build()));
+        }
+    }
+    //db.grades.find({ $and: [{student_id: {$in: [1,2,3]}},
+    // { $or: [{type: "exam"},{type: "quiz"}]} ]})
+
+    //db.grades.find({ $and: [{student_id: {$in: [1,2,3]}},
+    // { $or: [{type: "exam"},{type: "quiz"}]} ]}).sort({score:-1}).limit(3)
+
+    @Test
+    @DisplayName("findWithAndOrIn")
+    void findBy4() {
+        //when
+        FindIterable<Document> documents = api.findBy(
+                and(
+                        in("student_id", 1, 2, 3),
+                        or(
+                                eq("type", "exam"),
+                                eq("type", "quiz")
+                        )
+                )
+        );
+        documents.sort(new Document("score", -1)).limit(3);
+        //then
+        for (Document document : documents) {
+            logger.info(document.toJson(
+                    JsonWriterSettings.builder()
+                            .indent(true)
+                            .build()
+            ));
+        }
+    }
+
+    @Test
+    void insert() {
+        //given
+        Map<String, Object> document = ImmutableMap.of("student_id", 999, "type", "homework", "score", 111);
+        //when
+        api.insert(document);
+
+        //then
+        FindIterable<Document> students = api.findBy(eq("student_id", 999));
+        int count = 0;
+        for (Document doc : students) {
+            logger.info(doc.toJson(
+                    JsonWriterSettings.builder()
+                            .indent(true)
+                            .build()
+            ));
+            count++;
+        }
+        assertTrue(count > 0);
+    }
+
 }
