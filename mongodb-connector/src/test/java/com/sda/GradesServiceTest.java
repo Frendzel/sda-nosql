@@ -15,10 +15,10 @@ import java.util.Map;
 import static com.mongodb.client.model.Filters.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class GradesApiTest {
+class GradesServiceTest {
 
-    private Logger logger = LoggerFactory.getLogger(GradesApiTest.class);
-    private GradesApi api = new GradesApi();
+    private Logger logger = LoggerFactory.getLogger(GradesServiceTest.class);
+    private GradesService api = new GradesService();
 
     @Test
     @DisplayName("Should use find method on grades collection and return all values")
@@ -129,6 +129,7 @@ class GradesApiTest {
         }
     }
 
+    //insert + find
     @Test
     void insert() {
         //given
@@ -149,5 +150,4 @@ class GradesApiTest {
         }
         assertTrue(count > 0);
     }
-
 }
