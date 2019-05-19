@@ -1,8 +1,6 @@
 package com.sda;
 
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -19,8 +17,5 @@ class MongoDbConnectorTest {
         MongoDatabase connect = connector.connect();
         //then
         assertEquals(connect.getName(), connector.getPropertyLoader().getDB());
-        //TODO move later
-        MongoCollection<Document> grades = connect.getCollection("grades");
-        System.out.println(grades.countDocuments());
     }
 }
