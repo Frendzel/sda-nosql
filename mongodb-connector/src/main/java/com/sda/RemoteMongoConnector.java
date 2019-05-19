@@ -20,5 +20,6 @@ public class RemoteMongoConnector {
         RemoteMongoConnector remoteMongoConnector = new RemoteMongoConnector();
         MongoDatabase connect = remoteMongoConnector.connect();
         MongoCollection<Document> grades = connect.getCollection("grades");
+        System.out.println(grades.countDocuments());
     }
 }
