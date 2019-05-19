@@ -1,7 +1,10 @@
 package com.sda;
 
 import com.google.common.collect.ImmutableMap;
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
+import com.mongodb.client.model.Accumulators;
+import com.mongodb.client.model.Aggregates;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bson.json.JsonWriterSettings;
@@ -10,8 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
 
+import static com.google.common.collect.ImmutableList.of;
 import static com.mongodb.client.model.Filters.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -149,5 +154,48 @@ class GradesServiceTest {
             count++;
         }
         assertTrue(count > 0);
+    }
+
+    //db.grades.aggregate([{$match:{}},{$group:
+    // { _id:"$student_id",total:{$sum: "$score"}}}])
+    @Test
+    void aggregateTest() {
+        //given
+        Bson match = Aggregates.match(new Document());
+        Bson group = Aggregates.group("$student_id", Accumulators.sum("total", "$score"));
+        List<Bson> bsons = of(match, group);
+        //when
+        AggregateIterable<Document> documents = api.aggregate(bsons);
+        //then
+        for (Document document : documents) {
+            logger.info(document.toJson(
+                    JsonWriterSettings.builder()
+                            .indent(true)
+                            .build()
+            ));
+        }
+    }
+
+    //db.grades.aggregate([{$match:{}},{$group: { _id:"$student_id",total:{$sum: "$score"}}},
+    // {$sort: {total: 1}},
+    // {$limit: 1}])
+    @Test
+    void aggregateTest2() {
+        //given
+        Bson match = Aggregates.match(new Document());
+        Bson group = Aggregates.group("$student_id", Accumulators.sum("total", "$score"));
+        Bson limit = Aggregates.limit(3);
+        Bson sort = Aggregates.sort(new Document("total", 1));
+        List<Bson> bsons = of(match, group, sort, limit);
+        //when
+        AggregateIterable<Document> documents = api.aggregate(bsons);
+        //then
+        for (Document document : documents) {
+            logger.info(document.toJson(
+                    JsonWriterSettings.builder()
+                            .indent(true)
+                            .build()
+            ));
+        }
     }
 }

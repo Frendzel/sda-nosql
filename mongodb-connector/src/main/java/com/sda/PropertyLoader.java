@@ -48,6 +48,10 @@ public class PropertyLoader {
         return getProperty("address");
     }
 
+    String getUri() {
+        return getProperty("uri");
+    }
+
     private String getProperty(String property) {
         return properties.getProperty(property);
     }

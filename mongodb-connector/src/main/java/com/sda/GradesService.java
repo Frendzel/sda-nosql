@@ -1,10 +1,12 @@
 package com.sda;
 
+import com.mongodb.client.AggregateIterable;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoDatabase;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.util.List;
 import java.util.Map;
 
 public class GradesService implements GradesApi {
@@ -31,4 +33,10 @@ public class GradesService implements GradesApi {
     public void insert(Map<String, Object> document) {
         db.getCollection(COLLECTION_NAME).insertOne(new Document(document));
     }
+
+    @Override
+    public AggregateIterable<Document> aggregate(List<Bson> bsons) {
+        return db.getCollection(COLLECTION_NAME).aggregate(bsons);
+    }
+
 }
